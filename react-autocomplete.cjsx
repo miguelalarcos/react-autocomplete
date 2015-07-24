@@ -42,7 +42,10 @@ Item = ReactMeteor.createClass
         validateAutocomplete.set(@props.tag, true)
     render: ->
         <div onClick=@onclick className=@state.klass>
-            {@props.value}
+            {if @props.renderTemplate
+                React.createElement(@props.renderTemplate, value:@props.value)
+            else
+                @props.value}
         </div>
 
 #
@@ -94,7 +97,7 @@ Autocomplete = ReactMeteor.createClass
         <span className='widget'>
             <input type='text' value=@props.value onChange=@change onBlur=@focusout onKeyUp=@keyup />
             <div className='popover' tabIndex='100'>
-                {<Item key={item._id} value={item[@props.reference]} index={i} changeData=@props.changeData tag=@props.tag /> for item, i in @state.autoitems}
+                {<Item key={item._id} value={item[@props.reference]} renderTemplate=@props.renderTemplate index={i} changeData=@props.changeData tag=@props.tag /> for item, i in @state.autoitems}
             </div>
         </span>
 
