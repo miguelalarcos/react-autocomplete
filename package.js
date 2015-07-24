@@ -21,7 +21,7 @@ Package.onUse(function(api) {
   api.addFiles('react-autocomplete.styl', 'client');
   api.addFiles('react-autocomplete.cjsx', 'client');
   api.export('autocompleteMx', 'client');
-  api.export('modelMx', 'client');
+  api.export('stateMx', 'client');
   api.export('Autocomplete', 'client');
 
 

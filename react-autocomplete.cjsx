@@ -2,7 +2,7 @@ autoitems = new Mongo.Collection null
 
 validateAutocomplete = new ReactiveDict()
 
-modelMx = {
+stateMx = {
     setStateByObjectOrId: (id) ->
         if _.isEmpty(id)
             for v in (@autocompleteIds or [])
