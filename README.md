@@ -6,46 +6,35 @@ An autocomplete widget for React.
 Example
 -------
 
-(RAC = React Autocomplete; RMMx = React Model Mixins)
+In the *lib* folder:
+
+```coffee
+@AValidations = (self) ->
+  text1: (x) ->
+    if Meteor.isClient
+      self.isValidAutocomplete('myTag')
+    else
+      authors.findOne(value:x)
+  text2: (x) ->
+    if Meteor.isClient
+      self.isValidAutocomplete('myTag2')
+    else
+      authors.findOne(value:x)
+  x: (x) -> x >= 5
+```  
 
 ```coffee
 renT = ReactMeteor.createClass
     render: ->
         <span>author: <b>{@props.value}</b></span>
+```
 
-A = ReactMeteor.createClass
-    mixins: [RAC.autocompleteMx, RAC.stateMx, RMMx.saveMx, RMMx.validationMx, RMMx.integerMx]
-    autocompleteIds: ['myTag', 'myTag2']
-    collection: myCollection
-    validations: -> AValidations(this)
-    getInitialState: ->
-        text1: ''
-        text2: ''
-        x: 0
-    getMeteorState: ->
-        error_text1: => if not @isValidAttr('text1') then 'error autocomplete' else ''
-    error_x: -> if not @isValidAttr('x') then 'x>=5' else ''
-    random: -> Math.random()
-    render: ->
-        <div>
-            <RAC.Autocomplete value=@state.text1 call='autocomplete' reference='value' renderTemplate=renT tag='myTag' changeData=@changeDataAutocomplete('text1') />
-            <span className='red'>{@state.error_text1()}</span>
-            <RAC.Autocomplete value=@state.text2 call='autocomplete' reference='value' tag='myTag2' changeData=@changeDataAutocomplete('text2') />
-            <input type='text' value=@state.x onChange=@changeDataInteger('x')  />
-            <span className='red'>{@error_x()}</span>
-            <button disabled=@isNotValid() onClick=@save >save</button>
-            <span>{@random()}</span>
-        </div>
-
-Main = ReactMeteor.createClass
-    templateName: 'main'
-    reset: ->
-        @refs.ref1.setStateByObjectOrId({})
-    render: ->
-        <div>
-            <A ref='ref1' />
-            <button onClick=@reset>reset</button>
-        </div>
+```coffee
+getMeteorState: ->
+    error_text1: => if not @isValidAttr('text1') then 'error autocomplete' else ''
+render: ->
+    <RAC.Autocomplete value=@state.text1 call='autocomplete' reference='value' renderTemplate=renT tag='myTag' changeData=@changeDataAutocomplete('text1') />
+    <span className='red'>{@state.error_text1()}</span>
 ```
 
 Server side:
@@ -56,3 +45,15 @@ Meteor.methods
     authors.find(value: {$regex: '.*'+query+'.*'}).fetch()
 
 ```
+
+API
+---
+
+* stateMx
+    * setStateByObjectOrId
+      replace the state by the object given. If it's passed an id string, then the state is replaced with the object obtained by the findOne. It resets the validation of the field.
+* validationMx
+    * isValidAutocomplete
+* changeDataMx
+    * changeDataAutocomplete
+* Autocomplete (component)

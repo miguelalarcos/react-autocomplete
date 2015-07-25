@@ -20,9 +20,13 @@ RAC.stateMx = {
                 @replaceState obj
 }
 
-RAC.autocompleteMx = {
+#RAC.autocompleteMx = {
+RAC.validationMx = {
     isValidAutocomplete: (attr) ->
         validateAutocomplete.get(attr)
+}
+
+RAC.changeDataMx = {
     changeDataAutocomplete: (attr) ->
             (value) =>
                 dct = {}
