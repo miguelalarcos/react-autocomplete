@@ -2,7 +2,9 @@ autoitems = new Mongo.Collection null
 
 validateAutocomplete = new ReactiveDict()
 
-stateMx = {
+RAC = {}
+
+RAC.stateMx = {
     setStateByObjectOrId: (id) ->
         if _.isEmpty(id)
             for v in (@autocompleteIds or [])
@@ -18,7 +20,7 @@ stateMx = {
                 @replaceState obj
 }
 
-autocompleteMx = {
+RAC.autocompleteMx = {
     isValidAutocomplete: (attr) ->
         validateAutocomplete.get(attr)
     changeDataAutocomplete: (attr) ->
@@ -50,7 +52,7 @@ Item = ReactMeteor.createClass
 
 #
 
-Autocomplete = ReactMeteor.createClass
+RAC.Autocomplete = ReactMeteor.createClass
     keyup: (e) ->
         if e.keyCode == 38 #up
             index = autoitems.findOne({selected:true}).index

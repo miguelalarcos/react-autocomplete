@@ -20,9 +20,10 @@ Package.onUse(function(api) {
   api.use('stylus');
   api.addFiles('react-autocomplete.styl', 'client');
   api.addFiles('react-autocomplete.cjsx', 'client');
-  api.export('autocompleteMx', 'client');
-  api.export('stateMx', 'client');
-  api.export('Autocomplete', 'client');
+  //api.export('autocompleteMx', 'client');
+  //api.export('stateMx', 'client');
+  //api.export('Autocomplete', 'client');
+  api.export('RAC', 'client');
 
 
 });

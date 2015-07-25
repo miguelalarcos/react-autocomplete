@@ -6,48 +6,35 @@ An autocomplete widget for React.
 Example
 -------
 
+(RAC = React Autocomplete; RMMx = React Model Mixins)
+
 ```coffee
-validationMx = {
-    isValid: ->
-        for attr, func of @validations()
-            if not func @state[attr]
-                return false
-        true
-}
-
-saveMx = {
-    save: ->
-        if @state._id
-            @collection.update @state._id, $set:@state
-        else
-            id = @collection.insert @state
-            @setState _id: id
-}
-
 renT = ReactMeteor.createClass
     render: ->
         <span>author: <b>{@props.value}</b></span>
 
 A = ReactMeteor.createClass
-    mixins: [autocompleteMx, stateMx, saveMx, validationMx]
+    mixins: [RAC.autocompleteMx, RAC.stateMx, RMMx.saveMx, RMMx.validationMx, RMMx.integerMx]
     autocompleteIds: ['myTag', 'myTag2']
     collection: myCollection
-    validations: ->
-        self=this
-        text1: (x) -> self.isValidAutocomplete('myTag')
-        text2: (x) -> self.isValidAutocomplete('myTag2')
+    validations: -> AValidations(this)
     getInitialState: ->
         text1: ''
         text2: ''
+        x: 0
     getMeteorState: ->
-        texto = if not @isValidAutocomplete('myTag') then 'error ' else ''
-        error_text1: texto
+        error_text1: => if not @isValidAttr('text1') then 'error autocomplete' else ''
+    error_x: -> if not @isValidAttr('x') then 'x>=5' else ''
+    random: -> Math.random()
     render: ->
         <div>
-            hola: <Autocomplete value=@state.text1 call='autocomplete' reference='value' renderTemplate=renT tag='myTag' changeData=@changeDataAutocomplete('text1') />
-            {@state.error_text1}
-            mundo: <Autocomplete value=@state.text2 call='autocomplete' reference='value' tag='myTag2' changeData=@changeDataAutocomplete('text2') />
-            <button disabled={not @isValid()} onClick=@save >save</button>
+            <RAC.Autocomplete value=@state.text1 call='autocomplete' reference='value' renderTemplate=renT tag='myTag' changeData=@changeDataAutocomplete('text1') />
+            <span className='red'>{@state.error_text1()}</span>
+            <RAC.Autocomplete value=@state.text2 call='autocomplete' reference='value' tag='myTag2' changeData=@changeDataAutocomplete('text2') />
+            <input type='text' value=@state.x onChange=@changeDataInteger('x')  />
+            <span className='red'>{@error_x()}</span>
+            <button disabled=@isNotValid() onClick=@save >save</button>
+            <span>{@random()}</span>
         </div>
 
 Main = ReactMeteor.createClass
@@ -59,4 +46,13 @@ Main = ReactMeteor.createClass
             <A ref='ref1' />
             <button onClick=@reset>reset</button>
         </div>
+```
+
+Server side:
+
+```cooffee
+Meteor.methods
+  autocomplete: (query) -> 
+    authors.find(value: {$regex: '.*'+query+'.*'}).fetch()
+
 ```
