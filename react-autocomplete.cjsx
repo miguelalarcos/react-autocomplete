@@ -7,11 +7,11 @@ RAC = {}
 RAC.stateMx = {
     setStateByObjectOrId: (id) ->
         if _.isEmpty(id)
-            for v in (@autocompleteIds or [])
+            for v in (@autocompleteTags or [])
                 validateAutocomplete.set(v, false)
             @replaceState {}
         else
-            for v in (@autocompleteIds or [])
+            for v in (@autocompleteTags or [])
                 validateAutocomplete.set(v, true)
             if _.isString(id)
                 @replaceState @collection.findOne(id)
