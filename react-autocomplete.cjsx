@@ -5,7 +5,12 @@ validateAutocomplete = new ReactiveDict()
 RAC = {}
 
 RAC.stateMx = {
-    setStateByObjectOrId: (id) ->
+    setStateById: (id) ->
+        for v in (@autocompleteTags or [])
+            validateAutocomplete.set(v, true)
+        @replaceState @collection.findOne(id)
+
+    replaceStateByObject: (obj) ->
         if _.isEmpty(id)
             for v in (@autocompleteTags or [])
                 validateAutocomplete.set(v, false)
@@ -13,11 +18,7 @@ RAC.stateMx = {
         else
             for v in (@autocompleteTags or [])
                 validateAutocomplete.set(v, true)
-            if _.isString(id)
-                @replaceState @collection.findOne(id)
-            else
-                obj = id
-                @replaceState obj
+            @replaceState obj
 }
 
 #RAC.autocompleteMx = {

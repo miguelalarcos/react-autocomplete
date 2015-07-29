@@ -15,7 +15,8 @@ Package.onUse(function(api) {
 
   api.use('mongo');
   api.use('reactive-dict');
-  api.use('reactjs:react@0.2.4');
+  //api.use('reactjs:react@0.2.4');
+  api.use('react@0.1.4');
   api.use('jhartma:cjsx@2.4.1');
   api.use('stylus');
   api.addFiles('react-autocomplete.styl', 'client');
