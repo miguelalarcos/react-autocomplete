@@ -35,8 +35,9 @@ RAC.changeDataMx = {
                 @setState dct
 }
 
-Item = ReactMeteor.createClass
-    getMeteorState: ->
+Item = React.createClass
+    mixins: [ReactMeteorData]
+    getMeteorData: ->
         item = autoitems.findOne({selected:true})
         if item and item.index == @props.index
             classes = 'item selected'
@@ -48,7 +49,7 @@ Item = ReactMeteor.createClass
         autoitems.remove(tag:@props.tag)
         validateAutocomplete.set(@props.tag, true)
     render: ->
-        <div onClick=@onclick className=@state.klass>
+        <div onClick=@onclick className=@data.klass>
             {if @props.renderTemplate
                 React.createElement(@props.renderTemplate, value:@props.value)
             else
@@ -57,7 +58,8 @@ Item = ReactMeteor.createClass
 
 #
 
-RAC.Autocomplete = ReactMeteor.createClass
+RAC.Autocomplete = React.createClass
+    mixins: [ReactMeteorData]
     keyup: (e) ->
         if e.keyCode == 38 #up
             index = autoitems.findOne({selected:true}).index
@@ -98,13 +100,13 @@ RAC.Autocomplete = ReactMeteor.createClass
                     r.selected = true
                 autoitems.insert r
 
-    getMeteorState: ->
+    getMeteorData: ->
         autoitems: autoitems.find(tag:@.props.tag).fetch()
     render: ->
         <span className='widget'>
             <input type='text' value=@props.value onChange=@change onBlur=@focusout onKeyUp=@keyup />
             <div className='popover' tabIndex='100'>
-                {<Item key={item._id} value={item[@props.reference]} renderTemplate=@props.renderTemplate index={i} changeData=@props.changeData tag=@props.tag /> for item, i in @state.autoitems}
+                {<Item key={item._id} value={item[@props.reference]} renderTemplate=@props.renderTemplate index={i} changeData=@props.changeData tag=@props.tag /> for item, i in @data.autoitems}
             </div>
         </span>
 
