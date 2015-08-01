@@ -4,6 +4,8 @@ validateAutocomplete = new ReactiveDict()
 
 RAC = {}
 
+RAC.getValidationAutocomplete = (attr) -> validateAutocomplete.get(attr)
+
 RAC.stateMx = {
     setStateById: (id) ->
         for v in (@autocompleteTags or [])
@@ -21,11 +23,10 @@ RAC.stateMx = {
             @replaceState obj
 }
 
-#RAC.autocompleteMx = {
-RAC.validationMx = {
-    isValidAutocomplete: (attr) ->
-        validateAutocomplete.get(attr)
-}
+#RAC.validationMx = {
+#    isValidAutocomplete: (attr) ->
+#        c.get(attr)
+#}
 
 RAC.changeDataMx = {
     changeDataAutocomplete: (attr) ->

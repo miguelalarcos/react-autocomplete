@@ -9,15 +9,15 @@ Example
 In the *lib* folder:
 
 ```coffee
-@AValidations = (self) ->
+@AValidations = 
   text1: (x) ->
     if Meteor.isClient
-      self.isValidAutocomplete('myTag')
+      RAC.getValidationAutocomplete('myTag')
     else
       authors.findOne(value:x)
   text2: (x) ->
     if Meteor.isClient
-      self.isValidAutocomplete('myTag2')
+      RAC.getValidationAutocomplete('myTag2')
     else
       authors.findOne(value:x)
   x: (x) -> x >= 5
@@ -50,10 +50,9 @@ API
 ---
 
 * stateMx
-    * setStateByObjectOrId
-      replace the state by the object given. If it's passed an id string, then the state is replaced with the object obtained by the findOne. It resets the validation of the field.
-* validationMx
-    * isValidAutocomplete
+    * setStateById
+    * replaceStateByObject
+* getValidationAutocomplete
 * changeDataMx
     * changeDataAutocomplete
 * Autocomplete (component)
